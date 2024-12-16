@@ -14,3 +14,5 @@ When using models via the nowcasting toolbox, users are kindly requested to cite
 The toolbox builds on long-standing effort in the External Developments (EXT) division of the European Central Bank (ECB) to develop a nowcasting tool. This involved a number of colleagues notably Simona Delle Chiaie, Frederik Kurcz, and Gabriel Perez-Quiros who conducted previous nowcasting tools in the division, as well as Davide Brignone, Alistair Dieppe, Julia Doleschel, Rinalds Gerinovics, and Roberta de Stefani. 
 
 These programmes are the responsibilities of the authors and not of the ECB and all errors and ommissions remain those of the authors.
+
+In case of questions, please contact the authors at baptistemeunier@hotmail.fr and janlinzenich@gmail.com.
