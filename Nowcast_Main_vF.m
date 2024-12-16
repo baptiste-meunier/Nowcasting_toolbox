@@ -48,11 +48,11 @@ clear
 %% 0. TOOLBOX SETTINGS (to be changed by the user)
 % -------------------------------------------------------------------------
 
-do_eval = 1; % switch on the use of the toolbox
+do_eval = 0; % switch on the use of the toolbox
              % 0 = nowcast
              % 1 = model evaluation      
 
-do_loop = 1; % switch on whether to loop over different models
+do_loop = 0; % switch on whether to loop over different models
              % 0 = single model (user-defined in code below)
              % 1 = automatic loop over random models (selected within bounds set by user in code below)      
              % 2 = custom loop over user-defined list of models (in Eval_list_mod.xlsx)
