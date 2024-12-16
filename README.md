@@ -1,5 +1,5 @@
 # Nowcasting_toolbox
-Code and templates for Linzenich, J., and Meunier, B. (2024). Nowcasting Made Easier: a Toolbox for Real-Time Predictions. Working Paper Series, No XXXX, European Central Bank
+Code and templates for Linzenich, J., and Meunier, B. (2024). Nowcasting Made Easier: a Toolbox for Real-Time Predictions. Working Paper Series, No 3004, European Central Bank
 
 A detailed user guide for building a model using the toolbox is available in **Appendix A** of the working paper [add hyperlink].
 
