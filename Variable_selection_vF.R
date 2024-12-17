@@ -100,7 +100,7 @@ transfo_mth <- head(data_mth_init,1)[-1] # NA in first cell because are dates
 groups_mth <- data_mth_init[3,][-1] # NA in first cell because are dates
 
 data_mth <- data_mth_init
-colnames(data_mth) <- filter(data_mth_init,row_number()==4)
+colnames(data_mth) <- filter(data_mth_init,row_number()==3)
 colnames(transfo_mth) <- colnames(data_mth)[-1]
 colnames(groups_mth) <- colnames(data_mth)[-1]
 
@@ -158,7 +158,7 @@ transfo_qtr <- head(data_qtr_init,1)[-1] # NA in first cell because are dates
 groups_qtr <- data_qtr_init[3,][-1] # NA in first cell because are dates
 
 data_qtr <- data_qtr_init
-colnames(data_qtr) <- filter(data_qtr_init,row_number()==4)
+colnames(data_qtr) <- filter(data_qtr_init,row_number()==3)
 colnames(transfo_qtr) <- colnames(data_qtr)[-1]
 colnames(groups_qtr) <- colnames(data_qtr)[-1]
 
