@@ -184,22 +184,24 @@ n_obs <- nrow(temp)
 nlagsq <- data.frame(matrix(NA,
                             nrow = ncol(temp),
                             ncol = 3))
-for (jj in 1:ncol(temp)){
-  
-  # Select individual variable
-  temp_col <- temp[jj]
-  temp_name <- colnames(temp_col)
-  
-  # Check last non-NA position and difference with n_obs
-  non_NA_index <- which(!is.na(temp_col))
-  last_non_NA <- max(non_NA_index)
-  diff_na <- n_obs - last_non_NA 
-  
-  # Write in nlags
-  nlagsq[jj,1] <- temp_name
-  nlagsq[jj,2] <- diff_na
-  nlagsq[jj,3] <- 'Q'
-  
+if(ncol(temp)>0){
+  for (jj in 1:ncol(temp)){
+    
+    # Select individual variable
+    temp_col <- temp[jj]
+    temp_name <- colnames(temp_col)
+    
+    # Check last non-NA position and difference with n_obs
+    non_NA_index <- which(!is.na(temp_col))
+    last_non_NA <- max(non_NA_index)
+    diff_na <- n_obs - last_non_NA 
+    
+    # Write in nlags
+    nlagsq[jj,1] <- temp_name
+    nlagsq[jj,2] <- diff_na
+    nlagsq[jj,3] <- 'Q'
+    
+  }
 }
 
 # Merge publication lags for monthly and quarterly variables
