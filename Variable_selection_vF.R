@@ -97,7 +97,7 @@ data_mth_init <- read_excel(paste0("./dataset/data_",country,".xlsx"),
   select(-'...1')
 
 transfo_mth <- head(data_mth_init,1)[-1] # NA in first cell because are dates
-groups_mth <- data_mth_init[3,][-1] # NA in first cell because are dates
+groups_mth <- data_mth_init[2,][-1] # NA in first cell because are dates
 
 data_mth <- data_mth_init
 colnames(data_mth) <- filter(data_mth_init,row_number()==3)
@@ -155,7 +155,7 @@ data_qtr_init <- read_excel(paste0("./dataset/data_",country,".xlsx"),
   select(-'...1')
 
 transfo_qtr <- head(data_qtr_init,1)[-1] # NA in first cell because are dates
-groups_qtr <- data_qtr_init[3,][-1] # NA in first cell because are dates
+groups_qtr <- data_qtr_init[2,][-1] # NA in first cell because are dates
 
 data_qtr <- data_qtr_init
 colnames(data_qtr) <- filter(data_qtr_init,row_number()==3)
@@ -455,4 +455,5 @@ final_output <- order %>%
   left_join(nlags_final,by="variable")
 
 # Ranking of variables
-write.csv(final_output,file=paste0("./eval/",country,"/",country,"_preselection_method",select_method,"_lead",lead,"_",start_date,"_to_",end_date,".csv"))
+write.csv(final_output,
+          file=paste0("./eval/",country,"/",country,"_preselection_method",select_method,"_lead",lead,"_",start_date,"_to_",end_date,".csv"))
