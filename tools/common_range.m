@@ -10,7 +10,9 @@ function [range] = common_range(xest_out,Par,datet,groups_name,groups,country,na
 % - datet [matrix] = dates (year / month)
 % - groups_name [cell vector] = name of the groups
 % - groups [vector] = identification of groups
-% - country [structure] = information on model and country used
+% - country [structure] = country and model parameters
+%       o name [string] = name of the country
+%       o model [string] = model type
 % - nameseries [cell vector] = ID of the series in Haver
 %
 % OUTPUTS

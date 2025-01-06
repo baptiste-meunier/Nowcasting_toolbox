@@ -29,9 +29,8 @@ function [MAE] = common_mae(xest,Par,t_m,m,datet,do_Covid,country,MAE,do_mae,nam
 % - m [scalar] = number of months ahead
 % - datet [matrix] = dates (year / month). Difference with t_m is that datet relates to the data when adding NaN for months ahead
 % - do_Covid [scalar] = method for Covid correction 
-% - country [structure] = country parameters
+% - country [structure] = country and model parameters
 %       o name [string] = name of the country
-%       o stat [string] = transformation of target data (qoq or qoqAR)
 %       o model [string] = model type
 % - MAE [structure] mean absolute errors
 %       o Bac [structure] MAE for backcasting

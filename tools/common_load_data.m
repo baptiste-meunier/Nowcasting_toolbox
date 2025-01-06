@@ -1,4 +1,4 @@
-function[Par,xest,t_m,groups,nameseries,blocks,blocks_name,full_names,datet,country_stat,Loop] = common_load_data(excel_datafile,mon_freq,quar_freq,blocks_sheet,Par_in,m,do_loop,date_today,Loop)
+function[Par,xest,t_m,groups,nameseries,blocks,blocks_name,full_names,datet,Loop] = common_load_data(excel_datafile,mon_freq,quar_freq,blocks_sheet,Par_in,m,do_loop,date_today,Loop)
 % This script loads data
 % fetching from Haver does not work currently
 % fetching should be from an excelsheet so exceldata should be 1 
@@ -48,7 +48,6 @@ function[Par,xest,t_m,groups,nameseries,blocks,blocks_name,full_names,datet,coun
 % - blocks_name [cell vector] = name of the blocks
 % - full_names [cell vector] = complete name of the series
 % - datet [matrix] = dates (year / month). Difference with t_m is that datet relates to the data when adding NaN for months ahead
-% - country_stat [string] = transformation of the target variable (qoq or qoqAR)
 %
 
 % Set parameters
@@ -97,13 +96,6 @@ t_q = [Year_q, Month_q];
 % Transforming data
 data_m = common_transform_data(seriesm,transf_m,1);
 data_q = common_transform_data(seriesq,transf_q,1);
-
-% Create country_stat
-if transf_q(end) == 1
-    country_stat = 'qoq';
-elseif transf_q(end) == 3
-    country_stat = 'qoqAR';
-end
 
 % Computing dates
 t_m = t_m(2:end,:); % adjust for growth rates
