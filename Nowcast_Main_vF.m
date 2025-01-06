@@ -48,7 +48,7 @@ clear
 %% 0. TOOLBOX SETTINGS (to be changed by the user)
 % -------------------------------------------------------------------------
 
-do_eval = 0; % switch on the use of the toolbox
+do_eval = 1; % switch on the use of the toolbox
              % 0 = nowcast
              % 1 = model evaluation      
 
@@ -287,7 +287,7 @@ disp ('Section 2: Folders and files added');
 mon_freq = 'Monthly';
 quar_freq = 'Quarterly';
 blocks_sheet = 'blocks';
-[Par,xest,t_m,groups,nameseries,blocks,groups_name,fullnames,datet,country.stat,Loop] = ...
+[Par,xest,t_m,groups,nameseries,blocks,groups_name,fullnames,datet,Loop] = ...
         common_load_data(excel_datafile,mon_freq,quar_freq,blocks_sheet,Par,m,do_loop,date_today,Loop);
 
 % Subset data if required by user
