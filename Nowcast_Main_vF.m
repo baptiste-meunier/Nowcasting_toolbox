@@ -22,7 +22,7 @@
 %                                                                          %
 %    Approximate running times in nowcasting mode (do_eval = 0 and         %
 %    do_loop = 0) for DFM (NB: approximate timing, depends on model        %
-%    specifications and machine running the code                           %
+%    specifications and machine running the code)                          %
 %   - Only nowcast       (do_range = 0 / do_mae = 0) --> around 1 minute   %
 %   - Nowcast with range (do_range = 1 / do_mae = 0) --> around 15 minutes %
 %   - Nowcast with MAE   (do_range = 0 / do_mae = 1) --> around 20 minutes %
