@@ -48,23 +48,23 @@ clear
 %% 0. TOOLBOX SETTINGS (to be changed by the user)
 % -------------------------------------------------------------------------
 
-do_eval = 1; % switch on the use of the toolbox
-             % 0 = nowcast
-             % 1 = model evaluation      
+do_eval = 1;   % switch on the use of the toolbox
+               % 0 = nowcast
+               % 1 = model evaluation      
 
-do_loop = 0; % switch on whether to loop over different models
-             % 0 = single model (user-defined in code below)
-             % 1 = automatic loop over random models (selected within bounds set by user in code below)      
-             % 2 = custom loop over user-defined list of models (in Eval_list_mod.xlsx)
-             % NB: if do_loop is 1 or 2 then do_eval is automatically set to 1          
+do_loop = 0;   % switch on whether to loop over different models
+               % 0 = single model (user-defined in code below)
+               % 1 = automatic loop over random models (selected within bounds set by user in code below)      
+               % 2 = custom loop over user-defined list of models (in Eval_list_mod.xlsx)
+               % NB: if do_loop is 1 or 2 then do_eval is automatically set to 1          
 
-do_range = 0; % switch on whether to run alternative models (obtained by disconnecting 1 or 2 groups of variables)
-              % 0 = no
-              % 1 = yes (takes significantly longer to estimate)
+do_range = 0;  % switch on whether to run alternative models (obtained by disconnecting 1 or 2 groups of variables)
+               % 0 = no
+               % 1 = yes (takes significantly longer to estimate)
 
-do_mae = 0;  % switch on how to compute the Mean Absolute Error (MAE) and Forecast Directional Accuracy (FDA) from past forecast errors
-             % 0 = take user-specified values (in code below)
-             % 1 = compute based on past 10 years (takes significantly longer to estimate)
+do_mae = 0;    % switch on how to compute the Mean Absolute Error (MAE) and Forecast Directional Accuracy (FDA) from past forecast errors
+               % 0 = take user-specified values (in code below)
+               % 1 = compute based on past 10 years (takes significantly longer to estimate)
 
 do_subset = 0; % switch on whether to take a sub-set of the input data
                % 0 = take full input data (in DFM_data_xxx.xlsx)
@@ -77,13 +77,13 @@ do_subset = 0; % switch on whether to take a sub-set of the input data
 
 % Country hyper-parameters
 country.name = 'Example1';
-country.model = 'BVAR'; % either 'DFM' or 'BEQ' or 'BVAR'
+country.model = 'DFM'; % either 'DFM' or 'BEQ' or 'BVAR'
 
 % Model specifications
 if strcmp(country.name,'Example1')
 
     % common
-    Par.startyear = 2006;       % starting year for estimation
+    Par.startyear = 2005;       % starting year for estimation
     Par.startmonth = 1;         % starting month for estimation
     do_Covid = 0;               % switch on correction for Covid observations
                                 % 0 = do nothing
@@ -93,8 +93,8 @@ if strcmp(country.name,'Example1')
                                 % 4 = add dummies (one for Mar. 2020 and one for June 2020)
 
     % DFM
-    Par.p = 2;                  % number of lags 
-    Par.r = 4;                  % number of factors
+    Par.p = 4;                  % number of lags 
+    Par.r = 5;                  % number of factors
     Par.idio = 1;               % idiosyncratic component specification. 0 = iid, 1 = AR(1).
     Par.thresh = 1e-4;          % threshold for convergence of EM algorithm
     Par.max_iter = 100;         % number of iterations of EM algorithm
@@ -139,11 +139,11 @@ end
 % Additional inputs for model evaluation
 % NB: if do_eval=1
 Eval.data_update_lastyear = 2023;      % date at which the data for evaluation was updated
-Eval.data_update_lastmonth = 1;
-Eval.eval_startyear = 2019;            % start date for out-of-sample evaluation
-Eval.eval_startmonth = 1;
-Eval.eval_endyear = 2021;              % end date for out-of-sample evaluation
-Eval.eval_endmonth = 12;
+Eval.data_update_lastmonth = 10;
+Eval.eval_startyear = 2020;            % start date for out-of-sample evaluation
+Eval.eval_startmonth = 10;
+Eval.eval_endyear = 2022;              % end date for out-of-sample evaluation
+Eval.eval_endmonth = 10;
 Eval.gdp_rel = 2;                      % month of quarter at which GDP (for previous quarter) is available. Should be at most 3. 
                                        % for example, 2 means that GDP is available on the second month (but not on the first)
 
@@ -180,7 +180,7 @@ Loop.alter_covid = 1;                  % Switch to 1 to alter between Covid corr
 
 % Additional inputs for subsetting input data
 %NB: if do_subset=1
-var_keep = [1 2 3 4 5 6 7];            % variables to keep
+var_keep = [1   3   5   7   9  10  11  13  14  15  19  21  22  24  25  26  27  28  30  31];        % variables to keep
 
 
 % -------------------------------------------------------------------------
