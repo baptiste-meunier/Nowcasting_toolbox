@@ -63,8 +63,8 @@ Par = Par_in;
 transf_m = A(1,:);                  % load the transformation used for monthly series
 transf_q = C(1,:);                  % load the transformation used for quarterly series
 groups = [A(2,:) C(2,:)];           % load group definition
-nameseries = [B(3,3:end) D(3,3:end)];
-full_names = [B(4,3:end) D(4,3:end)];
+nameseries = [B(3,2:end) D(3,2:end)];
+full_names = [B(4,2:end) D(4,2:end)];
 blocks_name = G;
 
 % Check dimensions
@@ -76,8 +76,8 @@ if size(C,1) ~= size(D,1)
 end
 
 % Data matrices untransformed
-seriesm = A(10:end,:);                  % monthly
-seriesq = C(10:end,:);                  % quarterly
+seriesm = A(5:end,:);                  % monthly
+seriesq = C(5:end,:);                  % quarterly
 
 % Check for discontinued and suspended series
 common_CheckDataAvailability(full_names);              
@@ -85,9 +85,9 @@ common_CheckDataAvailability(full_names);
 
 %% Convert dates
 
-[Year_m, Month_m] = datevec(datetime(B(10:end,2), 'InputFormat', 'dd/MM/yyyy'));
+[Year_m, Month_m] = datevec(datetime(B(5:end,1), 'InputFormat', 'dd/MM/yyyy'));
 t_m = [Year_m, Month_m];
-[Year_q, Month_q] = datevec(datetime(D(10:end,2), 'InputFormat', 'dd/MM/yyyy'));
+[Year_q, Month_q] = datevec(datetime(D(5:end,1), 'InputFormat', 'dd/MM/yyyy'));
 t_q = [Year_q, Month_q];
         
 

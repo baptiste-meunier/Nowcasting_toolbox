@@ -331,6 +331,7 @@ for n_iter_mod = 1:Loop.n_iter
     % Save initial parameters
     % NB: Saved here because can change dynamically in common_NaN_Covid_correct
     nM_init = Par.nM;
+    nQ_init = Par.nQ;
     blocks_init = Par.blocks;
     r_init = Par.r;
     transf_m_init = Par.trf.transf_m;
@@ -405,8 +406,8 @@ for n_iter_mod = 1:Loop.n_iter
                 xin(end-Eval.delay(j)+1:end,j) = NaN; % delete last k points to reproduce missing observations
             end
         end
-        for j = 1:Par.nQ
-            if j == Par.nQ
+        for j = 1:nQ_init
+            if j == nQ_init
                 xin(end-Eval.gdp_rel+1:end,nM_init+j) = NaN; % delete last observations 
                                                              % done for GDP series
             elseif Eval.delay(nM_init+j) > 0
