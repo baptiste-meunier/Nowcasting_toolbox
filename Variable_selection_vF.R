@@ -6,7 +6,7 @@
 #           o be named 'data_xxx.xlsx' (xxx = country name) and be located in the folder 'dataset'
 #           o have both quarterly and monthly variables (resp. in 'Monthly' and 'Quarterly' tabs)
 #           o NB: in this code, the name of input dataset is automatically inferred from the country name
-#     - the mnemotechnic for the target variable (generally the Haver or FAME handle)
+#     - the mnemotechnic for the target variable
 #     - a choice of pre-selection method. Three are available: 
 #           o 1 = SIS: ranking of regressors is based on the correlation of the regressor with the target variable
 #           o 2 = LARS: ranking of regressors is based is based on the LARS algorithm
@@ -15,7 +15,7 @@
 #                 Among the three, this is the only multivariate method (i.e. other variables are taken into account when assessing the informative power of a regressor). 
 #                 Other methods are univariate: using them might result in selecting very similar variables, therefore with only limited informative power after the 2nd or 3rd variable. 
 #     - the period (start and end dates) on which the pre-selection is performed
-#     - the numnber of leads or lags to apply to the target series
+#     - the number of leads or lags to apply to the target series
 #           o lead = 0 for a pre-selection on contemporaneous dates
 #           o lead > 0 for a pre-selection with the target series taken at n-period ahead (and at n-period back if lead < 0)
 #
@@ -26,7 +26,7 @@
 #           o The output file is located in the folder 'eval' in the sub-folder corresponding to the country
 #           o The output file also contains information about the frequency, group, and publication lags of all series
 #               > NB1: publication delay is relative to the timeliest series (for which delay=0). Other delays are in comparison with this timeliest series.
-#               > NB2: publication delay is automatically infered by the code givne the presence of NA. Make sure that all series in the input have been updated at the same time to get meaningful inference.
+#               > NB2: publication delay is automatically inferred by the code given the presence of NA. Make sure that all series in the input have been updated at the same time to get meaningful inference.
 #
 # SOURCE:
 # Code taken from Chinn, M. D., Meunier, B., Stumpner, S. (2023).
@@ -56,48 +56,54 @@ country <- "Example1"      # country
                            # NB: it should match the name for the Excel input file (in folder 'dataset')
                            #     it should also  have a sub-folder named after it in folder 'eval'
 target <- "Name target"    # name of the target variable (line 4 in input Excel)
-start_date <- "2004-03-31" # start date for the pre-selection. 
+start_date <- "2012-03-31" # start date for the pre-selection. 
                            # NB: only quarters starting after this date will be retained
-end_date <- "2023-01-01"   # end date for the pre-selection
+end_date <- "2022-12-31"   # end date for the pre-selection
                            # NB: only quarters ending before this date will be retained
 lead <- 0                  # Number of leads for the target variable
                            # 0 = contemporaneous
                            # >0 = for n-period ahead
                            # <0 = for n-period back
-select_method <- 3         # choice of pre-selection method
-                           # 1 = correlation-based (Sure Independence Screening of Fan and Lv, 2008)
-                           # 2 = LARS (Efron et al., 2004)
-                           # 3 = t-stat based (Bair et al., 2006)
+select_method <- 1         # choice of pre-selection method
+                           # 1 = LARS (Efron et al., 2004)
+                           # 2 = t-stat based (Bair et al., 2006)
+                           # 3 = correlation-based (Sure Independence Screening of Fan and Lv, 2008)
 
 # If needed for installing packages, uncomment line below (and update the package name)
 # install.packages("readr")
 
-# Importing libraries
-library(magrittr)
-library(dplyr)
-library(tidyr)
-library(lubridate)
-library(tidyverse)
-library(readr)
-library(readxl)
-library(reshape2)
-library(zoo)
-library(stringr)
-library(lars)
+# Define libraries
+package_names <- c("magrittr",
+                   "dplyr",
+                   "tidyr",
+                   "lubridate",
+                   "tidyverse",
+                   "readr",
+                   "readxl",
+                   "reshape2",
+                   "zoo",
+                   "lars")
+
+# Install libraries
+for (i in package_names){
+  if(!require(i, character.only = T)){
+    install.packages(i, dependencies = T)
+    require(i, character.only = T)
+  }
+}
 
 
-#
+# ---------------------------------
 # 1. IMPORT DATA
-#
+# ---------------------------------
 
 # Import monthly data in levels
 data_mth_init <- read_excel(paste0("./dataset/data_",country,".xlsx"),
                             sheet="Monthly",
-                            col_names = FALSE) %>%
-  select(-'...1')
+                            col_names = FALSE)
 
-transfo_mth <- head(data_mth_init,1)[-1] # NA in first cell because are dates
-groups_mth <- data_mth_init[2,][-1] # NA in first cell because are dates
+transfo_mth <- head(data_mth_init,1)[-1]    # drop first column (should be NA) because are dates
+groups_mth <- data_mth_init[2,][-1]         # drop first column (should be NA) because are dates
 
 data_mth <- data_mth_init
 colnames(data_mth) <- filter(data_mth_init,row_number()==3)
@@ -110,11 +116,11 @@ if(sum(duplicated(colnames(data_mth)))>0){ # if there are duplicates, the proced
 }
 
 data_mth %<>%
-  filter(row_number()>=11) %>%
+  dplyr::filter(row_number()>=5) %>%
   mutate(across(everything(),
                 ~as.numeric(.))) %>%
-  rename('date'='.excel_last') %>%
-  mutate(date = as_date(as.Date(as.numeric(date), origin="1899-12-30")))
+  mutate(date = as_date(as.Date(as.numeric(date), origin="1899-12-30"))) %>%
+  dplyr::filter(!is.na(date))
 
 # Get publication delays for monthly data 
 # NB: publication delay is computed relative to the series with the later date (set to 0)
@@ -151,11 +157,10 @@ for (jj in 1:ncol(temp)){
 # Import quarterly data in levels
 data_qtr_init <- read_excel(paste0("./dataset/data_",country,".xlsx"),
                             sheet="Quarterly",
-                            col_names = FALSE) %>%
-  select(-'...1')
+                            col_names = FALSE)
 
-transfo_qtr <- head(data_qtr_init,1)[-1] # NA in first cell because are dates
-groups_qtr <- data_qtr_init[2,][-1] # NA in first cell because are dates
+transfo_qtr <- head(data_qtr_init,1)[-1]      # drop first column (should be NA) because are dates
+groups_qtr <- data_qtr_init[2,][-1]           # drop first column (should be NA) because are dates
 
 data_qtr <- data_qtr_init
 colnames(data_qtr) <- filter(data_qtr_init,row_number()==3)
@@ -168,12 +173,12 @@ if(sum(duplicated(colnames(data_qtr)))>0){ # if there are duplicates, the proced
 }
 
 data_qtr %<>%
-  filter(row_number()>=11) %>%
+  dplyr::filter(row_number()>=5) %>%
   mutate(across(everything(),
                 ~as.numeric(.))) %>%
-  rename('date'='.excel_last') %>%
-  mutate(date = as_date(as.Date(as.numeric(date), origin="1899-12-30")))
-
+  mutate(date = as_date(as.Date(as.numeric(date), origin="1899-12-30"))) %>%
+  dplyr::filter(!is.na(date))
+  
 # Get publication delays for quarterly data (relative to most advanced date = 0)
 temp <- data_qtr %>%
   filter(!is.na(date))
@@ -228,9 +233,9 @@ nlags_final <- nlags_all %>%
   merge(groups_all,by="variable",all.x=TRUE)
 
 
-#
+# ---------------------------------
 # 2. TRANSFORM DATA
-#
+# ---------------------------------
 
 # Get transformations (monthly)
 # Growth rates are actually dlog - as is the case in the DFM code
@@ -253,7 +258,7 @@ data_mth_transfo <- data_mth %>%
   mutate(across(all_of(list_yoy),
                 ~(log(.)-log(lag(.,12)))))
 
-# Standardize and match into qoq using the Mariano and Murasawa (2003) approximation
+# Standardize and match into q-o-q using the Mariano and Murasawa (2003) approximation
 # The same approximation is used in the DFM (see R matrix in DFM code)
 data_mth_transfo %<>%
   mutate(across(-date,
@@ -286,9 +291,9 @@ data_all_transfo <- data_qtr_transfo %>%
   merge(data_mth_transfo,by="date",all.x=TRUE)
   
 
-#
+# ---------------------------------
 # 3. PREPARE DATA FOR PRE-SELECTION
-#
+# ---------------------------------
 
 # Prepare target series
 if(lead>=0){
@@ -328,34 +333,18 @@ print(excluded_series)
 print("=================================================================================")
 
 
-#
+# ---------------------------------
 # 4. RUN PRE-SELECTION
-#
+# ---------------------------------
 
 # Initiate data
 smpl <- data_final %>%
   select(-date) %>%
   drop_na()
 
-if(select_method==1){ # 1 = Correlation-based (SIS: Fan and Lv, 2008)
-  
-  order <- smpl %>%
-    mutate(across(-target,~cor(.,
-                               target,
-                               use = "pairwise.complete.obs",
-                               method  = "pearson"))) %>%
-    select(-target) %>%
-    distinct() %>%
-    t() %>%
-    as.data.frame() %>%
-    rename(corr=V1)
-
-  order %<>%
-    mutate(corr = abs(corr)) %>%
-    arrange(desc(corr)) %>%
-    tibble::rownames_to_column("variable")
-  
-}else if(select_method==2){ # 2 = LARS (Efron et al., 2004)
+# Run methods
+# 1 = LARS (Efron et al., 2004)
+if(select_method==1){ 
   
   # Creating batches for LARS loop
   n_var = ncol(smpl)-1
@@ -411,9 +400,9 @@ if(select_method==1){ # 1 = Correlation-based (SIS: Fan and Lv, 2008)
     filter(row_number()>1) %>%
     rename("pecking order"=V1) %>%
     tibble::rownames_to_column("variable")
-  
 
-}else if(select_method==3){ # 3 = t-stat based (Bair et al., 2006)
+# 2 = t-stat based (Bair et al., 2006)  
+}else if(select_method==2){ 
   
   # Create 2 lags of the dependent variable as in Bair et al. (2006)
   init <- smpl %>%
@@ -443,12 +432,31 @@ if(select_method==1){ # 1 = Correlation-based (SIS: Fan and Lv, 2008)
   order %<>%
     arrange(desc(tstat))
 
-}
+# 3 = Correlation-based (SIS: Fan and Lv, 2008)    
+}else if(select_method==3){ 
+  
+  order <- smpl %>%
+    mutate(across(-target,~cor(.,
+                               target,
+                               use = "pairwise.complete.obs",
+                               method  = "pearson"))) %>%
+    select(-target) %>%
+    distinct() %>%
+    t() %>%
+    as.data.frame() %>%
+    rename(corr=V1)
+
+  order %<>%
+    mutate(corr = abs(corr)) %>%
+    arrange(desc(corr)) %>%
+    tibble::rownames_to_column("variable")
+  
+} 
 
 
-#
+# ---------------------------------
 # 5. WRITE OUTPUT
-#
+# ---------------------------------
 
 # Add information on publication delays, frequency, and groups
 final_output <- order %>%
