@@ -299,20 +299,21 @@ if do_subset == 1
 
     % Adjusting data
     xest = xest(:,[var_keep,end]);       
-    Par.nM = sum(var_keep<=nM_init);
+    Par.nM = sum(var_keep <= nM_init);
     Par.nQ = length(var_keep) - Par.nM + 1;
 
     % Adjusting other parameters
     Par.blocks = Par.blocks([var_keep,end]',:);
     groups = groups([var_keep,end]);
     fullnames = fullnames([var_keep,end]);
+    nameseries = nameseries([var_keep,end]);
     ID_groups = unique(groups(:));
     groups_name = groups_name(ID_groups);
 
     % Adjust transformations (for bridge equations)
-    var_keep_m = var_keep(var_keep<=nM_init); % monthly variables
+    var_keep_m = var_keep(var_keep <= nM_init); % monthly variables
     Par.trf.transf_m = Par.trf.transf_m(var_keep_m);
-    var_keep_q = var_keep(var_keep>nM_init); % quarterly variables
+    var_keep_q = var_keep(var_keep > nM_init); % quarterly variables
     var_keep_q = [var_keep_q,(nM_init + nQ_init)];
     var_keep_q = var_keep_q - nM_init;
     Par.trf.transf_q = Par.trf.transf_q(var_keep_q);
