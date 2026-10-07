@@ -252,7 +252,7 @@ data_mth_transfo <- data_mth %>%
   mutate(across(all_of(list_mom),
                 ~(log(.)-log(lag(.))))) %>%
   mutate(across(all_of(list_diff),
-                ~(.-lag(.)-1))) %>%
+                ~(.-lag(.)))) %>%
   mutate(across(all_of(list_qoqAR),
                 ~(log(.)-log(lag(.,3)))*4)) %>%
   mutate(across(all_of(list_yoy),
@@ -280,7 +280,7 @@ data_qtr_transfo <- data_qtr %>%
   mutate(across(all_of(list_qoq),
                 ~(log(.)-log(lag(.))))) %>%
   mutate(across(all_of(list_diff),
-                ~(.-lag(.)-1))) %>%
+                ~(.-lag(.)))) %>%
   mutate(across(all_of(list_qoqAR),
                 ~(log(.)-log(lag(.)))*4)) %>%
   mutate(across(all_of(list_yoy),
